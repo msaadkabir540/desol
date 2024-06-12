@@ -1,19 +1,26 @@
 "use client";
-import React from "react";
-import Link from "next/link";
-import AllProducts from "./components/all-products";
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import AddVehicle from "./components/add-vehicle";
 
 const Home = () => {
+  const router = useRouter();
+  const isToken = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
+  useEffect(() => {
+    const token = localStorage?.getItem("token");
+    if (!token) {
+      router.push("/login");
+    }
+  }, [router]);
+
   return (
     <div>
-      <div className="d-flex mb-2">
-        <Link className="btn btn-primary" href="../add/">
-          Add Product
-        </Link>
-      </div>
-      <div>
-        <AllProducts />
-      </div>
+      {isToken && (
+        <div>
+          <AddVehicle />
+        </div>
+      )}
     </div>
   );
 };
